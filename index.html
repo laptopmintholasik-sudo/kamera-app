@@ -40,7 +40,9 @@
 
 <video id="video" autoplay playsinline></video>
 
-<button id="btnFoto">
+<br><br>
+  
+<button id="btnFoto" style="display:none;">
 📸 Ambil Foto
 </button>
 
@@ -48,7 +50,12 @@
 
 <canvas id="canvas" style="display:none;"></canvas>
 
-<img id="hasilFoto" width="500" style="display:none;border:2px solid #333;">
+<img id="hasilFoto"
+     style="display:none;
+            width:500px;
+            max-width:90%;
+            border:2px solid #333;">
+
   
 <script>
 const tombol = document.getElementById("btnKamera");
@@ -63,12 +70,32 @@ tombol.onclick = async function () {
 
     video.srcObject = stream;
     video.style.display = "block";
+    btnFoto.style.display = "inline-block";
 
   } catch (err) {
     alert("Kamera tidak bisa dibuka.\n\n" + err.message);
   }
 };
-  
+
+const btnFoto = document.getElementById("btnFoto");
+const canvas = document.getElementById("canvas");
+const hasilFoto = document.getElementById("hasilFoto");
+
+btnFoto.onclick = function(){
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(video,0,0);
+
+    hasilFoto.src = canvas.toDataURL("image/png");
+
+    hasilFoto.style.display = "block";
+
+}
 </script>
+
 </body>
 </html>
