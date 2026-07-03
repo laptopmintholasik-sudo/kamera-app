@@ -40,5 +40,25 @@
 
 <video id="video" autoplay playsinline></video>
 
+<script>
+const tombol = document.getElementById("btnKamera");
+const video = document.getElementById("video");
+
+tombol.onclick = async function () {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: false
+    });
+
+    video.srcObject = stream;
+    video.style.display = "block";
+
+  } catch (err) {
+    alert("Kamera tidak bisa dibuka.\n\n" + err.message);
+  }
+};
+  
+</script>
 </body>
 </html>
