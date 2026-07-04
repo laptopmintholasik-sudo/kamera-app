@@ -1,161 +1,63 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kamera App - Versi 2.3</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{
-    font-family:Arial, sans-serif;
-    text-align:center;
-    margin:20px;
-    background:#f5f5f5;
-}
+    <title>Kamera Profesional</title>
 
-h1{
-    color:#333;
-}
-
-button{
-    padding:12px 20px;
-    margin:5px;
-    font-size:16px;
-    cursor:pointer;
-}
-
-video,
-img{
-    width:500px;
-    max-width:95%;
-    border:2px solid #333;
-    border-radius:10px;
-    margin-top:15px;
-}
-
-#video,
-#hasilFoto{
-    display:none;
-}
-
-#canvas{
-    display:none;
-}
-
-</style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1>📷 Kamera App</h1>
+<div class="container">
 
-<button id="btnKamera">Buka Kamera</button>
-<button id="btnFoto" style="display:none;">Ambil Foto</button>
-<button id="btnTutup" style="display:none;">Tutup Kamera</button>
+    <h1>📷 Kamera Profesional</h1>
 
-<br>
+    <p id="status">
+        🔴 Kamera belum dibuka
+    </p>
 
-<video id="video" autoplay playsinline></video>
+    <div class="card">
 
-<canvas id="canvas"></canvas>
+        <video
+            id="video"
+            autoplay
+            playsinline>
+        </video>
 
-<br>
+        <img
+            id="hasilFoto">
 
-<img id="hasilFoto">
+    </div>
 
-<script>
+    <div class="tombol">
 
-const btnKamera = document.getElementById("btnKamera");
-const btnFoto = document.getElementById("btnFoto");
-const btnTutup = document.getElementById("btnTutup");
+        <button id="btnKamera">
+            📷 Buka Kamera
+        </button>
 
-const video = document.getElementById("video");
-const canvas = document.getElementById("canvas");
-const hasilFoto = document.getElementById("hasilFoto");
+        <button id="btnFoto" disabled>
+            📸 Ambil Foto
+        </button>
 
-let stream = null;
+        <button id="btnUlang" disabled>
+            🔄 Ulangi
+        </button>
 
-//==============================
-// BUKA KAMERA
-//==============================
+        <button id="btnSimpan" disabled>
+            💾 Simpan
+        </button>
 
-btnKamera.onclick = async function(){
+    </div>
 
-    try{
+    <canvas id="canvas"></canvas>
 
-        stream = await navigator.mediaDevices.getUserMedia({
-            video:true,
-            audio:false
-        });
+</div>
 
-        video.srcObject = stream;
-
-        video.onloadedmetadata = function(){
-
-            video.play();
-
-            video.style.display="block";
-            btnFoto.style.display="inline-block";
-            btnTutup.style.display="inline-block";
-
-        }
-
-    }catch(err){
-
-        alert(err.name + "\n" + err.message);
-
-    }
-
-}
-
-//==============================
-// AMBIL FOTO
-//==============================
-
-btnFoto.onclick = function(){
-
-    if(video.videoWidth===0){
-
-        alert("Video belum siap.");
-        return;
-
-    }
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    const ctx = canvas.getContext("2d");
-
-    ctx.drawImage(video,0,0,canvas.width,canvas.height);
-
-    hasilFoto.src = canvas.toDataURL("image/png");
-
-    hasilFoto.style.display="block";
-
-}
-
-//==============================
-// TUTUP KAMERA
-//==============================
-
-btnTutup.onclick = function(){
-
-    if(stream){
-
-        stream.getTracks().forEach(track=>track.stop());
-
-    }
-
-    video.srcObject=null;
-
-    video.style.display="none";
-
-    btnFoto.style.display="none";
-    btnTutup.style.display="none";
-
-}
-
-</script>
+<script src="script.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
